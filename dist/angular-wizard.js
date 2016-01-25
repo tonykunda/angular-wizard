@@ -1,6 +1,6 @@
 /**
  * Easy to use Wizard library for AngularJS
- * @version v0.6.0 - 2015-12-31 * @link https://github.com/mgonto/angular-wizard
+ * @version v0.6.1 - 2016-01-22 * @link https://github.com/mgonto/angular-wizard
  * @author Martin Gontovnikas <martin@gon.to>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -14,13 +14,42 @@ angular.module("step.html", []).run(["$templateCache", function($templateCache) 
 
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("wizard.html",
-    "<div>\n" +
-    "    <div class=\"steps\" ng-transclude></div>\n" +
-    "    <ul class=\"steps-indicator steps-{{getEnabledSteps().length}}\" ng-if=\"!hideIndicators\">\n" +
-    "      <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
-    "        <a ng-click=\"goTo(step)\">{{step.title || step.wzTitle}}</a>\n" +
-    "      </li>\n" +
-    "    </ul>\n" +
+    "<div class=\"row\">\n" +
+    "  <div class=\"col-sm-12\" id=\"resident_form\">\n" +
+    "    <div class=\"box box-color box-bordered\">\n" +
+    "      <div class=\"box-title\">\n" +
+    "        <h3>\n" +
+    "          <i class=\"fa {{headerIcon}}\"></i> {{name}}\n" +
+    "        </h3>\n" +
+    "      </div>\n" +
+    "      <div class=\"box-content nopadding\">\n" +
+    "        <form class=\"form-horizontal form-wizard wizard-vertical\">\n" +
+    "          <div class=\"step ui-formwizard-content\">\n" +
+    "              <!-- Step List -->\n" +
+    "              <ul class=\"wizard-steps\">\n" +
+    "                <li ng-class=\"{active: step.selected}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
+    "                  <div class=\"single-step\" ng-click=\"goTo(step)\">\n" +
+    "                    <span class=\"title\">{{$index+1}}</span>\n" +
+    "                    <span class=\"description\">\n" +
+    "                      {{step.title || step.wzTitle}}\n" +
+    "                    </span>\n" +
+    "                  </div>\n" +
+    "                </li>\n" +
+    "              </ul>\n" +
+    "              <!-- End Step List -->\n" +
+    "              <div class=\"form-content\">\n" +
+    "                <h4>{{step.title || step.wzTitle}}</h4>\n" +
+    "                <div class=\"steps\" ng-transclude></div>\n" +
+    "              </div>\n" +
+    "            </div>\n" +
+    "            <div class=\"form-actions\">\n" +
+    "              <button class=\"btn\" wz-previous>Next</button>\n" +
+    "        			<button class=\"btn btn-primary\" wz-next>Next</button>\n" +
+    "        		</div>\n" +
+    "        </form>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -62,7 +91,8 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
             onFinish: '&',
             hideIndicators: '=',
             editMode: '=',
-            name: '@'
+            name: '@',
+            headerIcon: '@'
         },
         templateUrl: function(element, attributes) {
             return attributes.template || "wizard.html";
@@ -353,7 +383,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     $scope.onFinish();
                 }
             };
-            
+
             this.previous = function() {
                 //getting index of current step
                 var index = stepIdx($scope.selectedStep);
@@ -391,6 +421,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
         }]
     };
 });
+
 function wizardButtonDirective(action) {
     angular.module('mgo-angular-wizard')
         .directive(action, function() {

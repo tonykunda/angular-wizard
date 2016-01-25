@@ -1,8 +1,37 @@
-<div>
-    <div class="steps" ng-transclude></div>
-    <ul class="steps-indicator steps-{{getEnabledSteps().length}}" ng-if="!hideIndicators">
-      <li ng-class="{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}" ng-repeat="step in getEnabledSteps()">
-        <a ng-click="goTo(step)">{{step.title || step.wzTitle}}</a>
-      </li>
-    </ul>
+<div class="row">
+  <div class="col-sm-12" id="resident_form">
+    <div class="box box-color box-bordered">
+      <div class="box-title">
+        <h3>
+          <i class="fa {{headerIcon}}"></i> {{name}}
+        </h3>
+      </div>
+      <div class="box-content nopadding">
+        <form class="form-horizontal form-wizard wizard-vertical">
+          <div class="step ui-formwizard-content">
+              <!-- Step List -->
+              <ul class="wizard-steps">
+                <li ng-class="{active: step.selected}" ng-repeat="step in getEnabledSteps()">
+                  <div class="single-step" ng-click="goTo(step)">
+                    <span class="title">{{$index+1}}</span>
+                    <span class="description">
+                      {{step.title || step.wzTitle}}
+                    </span>
+                  </div>
+                </li>
+              </ul>
+              <!-- End Step List -->
+              <div class="form-content">
+                <h4>{{step.title || step.wzTitle}}</h4>
+                <div class="steps" ng-transclude></div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" wz-previous>Next</button>
+        			<button class="btn btn-primary" wz-next>Next</button>
+        		</div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

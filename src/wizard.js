@@ -9,7 +9,8 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
             onFinish: '&',
             hideIndicators: '=',
             editMode: '=',
-            name: '@'
+            name: '@',
+            headerIcon: '@'
         },
         templateUrl: function(element, attributes) {
             return attributes.template || "wizard.html";
@@ -300,7 +301,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     $scope.onFinish();
                 }
             };
-            
+
             this.previous = function() {
                 //getting index of current step
                 var index = stepIdx($scope.selectedStep);
